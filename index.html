@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Unit Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .converter-box {
+            background: #ffffff;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 1.1em;
+            text-align: center;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="converter-box">
+    <h2>Length Converter</h2>
+    <div class="input-group">
+        <label for="inputValue">Value:</label>
+        <input type="number" id="inputValue" placeholder="Enter value" oninput="convertUnits()">
+    </div>
+    
+    <div class="input-group">
+        <label for="fromUnit">From:</label>
+        <select id="fromUnit" onchange="convertUnits()">
+            <option value="meters">Meters</option>
+            <option value="feet">Feet</option>
+            <option value="inches">Inches</option>
+            <option value="kilometers">Kilometers</option>
+        </select>
+    </div>
+
+    <div class="input-group">
+        <label for="toUnit">To:</label>
+        <select id="toUnit" onchange="convertUnits()">
+            <option value="feet">Feet</option>
+            <option value="meters">Meters</option>
+            <option value="inches">Inches</option>
+            <option value="kilometers">Kilometers</option>
+        </select>
+    </div>
+
+    <div class="result" id="resultText">Result: 0</div>
+</div>
+
+<script>
+    function convertUnits() {
+        const val = parseFloat(document.getElementById('inputValue').value);
+        const from = document.getElementById('fromUnit').value;
+        const to = document.getElementById('toUnit').value;
+        const resultDisplay = document.getElementById('resultText');
+
+        if (isNaN(val)) {
+            resultDisplay.innerText = "Result: 0";
+            return;
+        }
+
+        // Convert input to meters first (base unit)
+        let valueInMeters = val;
+        if (from === 'feet') valueInMeters = val / 3.28084;
+        else if (from === 'inches') valueInMeters = val / 39.3701;
+        else if (from === 'kilometers') valueInMeters = val * 1000;
+
+        // Convert meters to target unit
+        let finalResult = valueInMeters;
+        if (to === 'feet') finalResult = valueInMeters * 3.28084;
+        else if (to === 'inches') finalResult = valueInMeters * 39.3701;
+        else if (to === 'kilometers') finalResult = valueInMeters / 1000;
+
+        resultDisplay.innerText = `Result: ${finalResult.toFixed(4)}`;
+    }
+</script>
+
+</body>
+</html>
